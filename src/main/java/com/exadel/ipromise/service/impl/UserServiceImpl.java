@@ -6,21 +6,22 @@ import com.exadel.ipromise.dao.UserDao;
 import com.exadel.ipromise.dto.UserDto;
 import com.exadel.ipromise.entity.User;
 import com.exadel.ipromise.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserDtoToUserEntityConverter userDtoToUserEntityConverter;
 
-    @Autowired
-    UserEntityToUserDtoConverter userEntityToUserDtoConverter;
+    public UserServiceImpl(UserDtoToUserEntityConverter userDtoToUserEntityConverter, UserEntityToUserDtoConverter userEntityToUserDtoConverter, UserDao userDao) {
+        this.userDtoToUserEntityConverter = userDtoToUserEntityConverter;
+        this.userEntityToUserDtoConverter = userEntityToUserDtoConverter;
+        this.userDao = userDao;
+    }
 
-    @Autowired
-    UserDao userDao;
+    private final UserDtoToUserEntityConverter userDtoToUserEntityConverter;
+    private final UserEntityToUserDtoConverter userEntityToUserDtoConverter;
+    private final UserDao userDao;
 
     @Override
     @Transactional
