@@ -16,7 +16,7 @@ public class Promise {
     @JsonProperty("start_date_stamp")
     private int startDateStamp;
 
-    @JsonProperty("amountDays")
+    @JsonProperty("amount_days")
     private int amountDays;
 
     @JsonProperty("name_addiction")
@@ -82,15 +82,4 @@ public class Promise {
         this.nameAddiction = nameAddiction;
     }
 
-    @Override
-    public String toString() {
-        return "\nPromise{" +
-                "promiseId=" + promiseId +
-                ", userId=" + userId +
-                ", addictionId=" + addictionId +
-                ", startDateStamp=" + startDateStamp +
-                ", amountDays=" + amountDays +
-                ", nameAddiction='" + nameAddiction + '\'' +
-                '}';
-    }
 }

@@ -6,10 +6,10 @@ public interface UserDao {
 
     void create(User user);
 
-    Boolean checkUserByEmail(User user);
+    User getById(int id);
 
-    User getUserById(int id);
+    User getByEmail(String email);
 
-    User getUserByEmail(User user);
+    Boolean checkIfUserExistsByEmail(String email);
 
 }

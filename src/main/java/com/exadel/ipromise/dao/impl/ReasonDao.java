@@ -7,14 +7,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ReasonDao {
 
+    private final JdbcTemplate jdbcTemplate;
+
+    String CREATE = "INSERT INTO jpa.reasons (promise_id, reason) VALUES (?, ?)";
+
     public ReasonDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private final JdbcTemplate jdbcTemplate;
-
-    public int createReason(Reason reason) {
-        String addReason = "INSERT INTO jpa.reasons (promise_id, reason) VALUES (?, ?)";
-        return jdbcTemplate.update(addReason, reason.getPromiseId(), reason.getReason());
+    public int create(Reason reason) {
+        return jdbcTemplate.update(CREATE, reason.getPromiseId(), reason.getReason());
     }
 }

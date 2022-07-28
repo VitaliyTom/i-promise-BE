@@ -1,7 +1,6 @@
 package com.exadel.ipromise.service.impl;
 
-import com.exadel.ipromise.converter.dto2Entity.UserDtoToUserEntityConverter;
-import com.exadel.ipromise.converter.entity2Dto.UserEntityToUserDtoConverter;
+import com.exadel.ipromise.converter.UserConverter;
 import com.exadel.ipromise.dao.UserDao;
 import com.exadel.ipromise.dto.UserDto;
 import com.exadel.ipromise.entity.User;
@@ -12,22 +11,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("UserService")
 public class UserServiceImpl implements UserService {
 
+    private final UserConverter userConverter;
+    private final UserDao userDao;
 
-    public UserServiceImpl(UserDtoToUserEntityConverter userDtoToUserEntityConverter, UserEntityToUserDtoConverter userEntityToUserDtoConverter, UserDao userDao) {
-        this.userDtoToUserEntityConverter = userDtoToUserEntityConverter;
-        this.userEntityToUserDtoConverter = userEntityToUserDtoConverter;
+    public UserServiceImpl(UserConverter userConverter, UserDao userDao) {
+        this.userConverter = userConverter;
         this.userDao = userDao;
     }
-
-    private final UserDtoToUserEntityConverter userDtoToUserEntityConverter;
-    private final UserEntityToUserDtoConverter userEntityToUserDtoConverter;
-    private final UserDao userDao;
 
     @Override
     @Transactional
     public void addUser(UserDto userDto) {
-        User user = userDtoToUserEntityConverter.convert(userDto);
-        if (!userDao.checkUserByEmail(user)) {
+        User user = userConverter.convertToDto(userDto);
+        if (!userDao.checkIfUserExistsByEmail(user.getEmail())) {
             userDao.create(user);
         }
     }
@@ -35,26 +31,26 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto getUserById(int id) {
-        User user = userDao.getUserById(id);
-        return userEntityToUserDtoConverter.convert(user);
+        User user = userDao.getById(id);
+        return userConverter.convertToEntity(user);
     }
 
     @Override
     @Transactional
     public Boolean checkUserByEmail(UserDto userDto) {
-        User user = userDtoToUserEntityConverter.convert(userDto);
-        return userDao.checkUserByEmail(user);
+        User user = userConverter.convertToDto(userDto);
+        return userDao.checkIfUserExistsByEmail(user.getEmail());
     }
 
     @Override
     @Transactional
     public UserDto getUserByEmail(UserDto userDto) {
 
-        User user = userDtoToUserEntityConverter.convert(userDto);
+        User user = userConverter.convertToDto(userDto);
+        User userEntity = userDao.getByEmail(user.getEmail());
 
-        User userEntity = userDao.getUserByEmail(user);
         if (validUser(user, userEntity)) {
-            return userEntityToUserDtoConverter.convert(userEntity);
+            return userConverter.convertToEntity(userEntity);
         } else {
             return new UserDto();
         }

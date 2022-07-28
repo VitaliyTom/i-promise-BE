@@ -13,36 +13,31 @@ import java.util.List;
 @Repository
 public class PromiseDao {
 
+    private final JdbcTemplate jdbcTemplate;
+
+    String CREATE = "INSERT INTO jpa.promises (user_id, addiction_id, start_date_stamp, amount_days) VALUES(?, ?, ?, ?)";
+    String GET_BY_ID_USER = "SELECT * FROM jpa.promises AS PR INNER JOIN jpa.addictions AS ADCT on ADCT.addiction_id = PR.addiction_id WHERE user_id = ?";
+
     public PromiseDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private final JdbcTemplate jdbcTemplate;
-
-    public List<Promise> findAll() {
-        List<Promise> promises = jdbcTemplate.query("SELECT * FROM jpa.promises", new BeanPropertyRowMapper<>(Promise.class));
-        return promises;
-    }
-
-    public List<Promise> findByIdUser(int userId) {
-        String sql = "SELECT * FROM jpa.promises AS PR INNER JOIN jpa.addictions AS ADCT on ADCT.addiction_id = PR.addiction_id WHERE user_id = ?";
-        List<Promise> promises = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Promise.class), userId);
-        return promises;
-    }
-
-    public Number create(Promise promise) {
-        String addPromise = "INSERT INTO jpa.promises (user_id, addiction_id, start_date_stamp, amount_days) VALUES(?, ?, ?, ?)";
+    public Long create(Promise promise) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
-            PreparedStatement preparedStatement = connection.prepareStatement(addPromise, new String[]{"promise_id"});
+            PreparedStatement preparedStatement = connection.prepareStatement(CREATE, new String[]{"promise_id"});
             preparedStatement.setInt(1, promise.getUserId());
             preparedStatement.setInt(2, promise.getAddictionId());
             preparedStatement.setInt(3, promise.getStartDateStamp());
             preparedStatement.setInt(4, promise.getAmountDays());
             return preparedStatement;
         }, keyHolder);
-        return keyHolder.getKey();
+        return  (Long) keyHolder.getKey();
+    }
+
+    public List<Promise> getByIdUser(int userId) {
+        return jdbcTemplate.query(GET_BY_ID_USER, new BeanPropertyRowMapper<>(Promise.class), userId);
     }
 }

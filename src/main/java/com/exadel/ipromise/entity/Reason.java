@@ -46,12 +46,4 @@ public class Reason {
         this.reason = reason;
     }
 
-    @Override
-    public String toString() {
-        return "\nReason{" +
-                "reasonId=" + reasonId +
-                ", promiseId=" + promiseId +
-                ", reason='" + reason + '\'' +
-                '}';
-    }
 }

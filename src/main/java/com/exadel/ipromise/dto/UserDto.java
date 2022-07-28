@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UserDto {
 
     private int userId;
-    private String nickname;
+    private String nickName;
     private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -14,9 +14,9 @@ public class UserDto {
     public UserDto() {
     }
 
-    public UserDto(int userId, String nickname, String email, String password) {
+    public UserDto(int userId, String nickName, String email, String password) {
         this.userId = userId;
-        this.nickname = nickname;
+        this.nickName = nickName;
         this.email = email;
         this.password = password;
     }
@@ -29,12 +29,12 @@ public class UserDto {
         this.userId = userId;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getEmail() {
@@ -53,13 +53,4 @@ public class UserDto {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "\nUserDto{" +
-                "userId=" + userId +
-                ", nickname='" + nickname + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
 }
