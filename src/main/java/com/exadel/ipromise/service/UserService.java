@@ -2,14 +2,14 @@ package com.exadel.ipromise.service;
 
 import com.exadel.ipromise.dto.UserDto;
 
+import javax.servlet.http.HttpSession;
+
 public interface UserService {
 
-    void addUser(UserDto userDto);
+    UserDto addUser(UserDto userDto, HttpSession session);
 
-    UserDto getUserById(int id);
+    UserDto logIn(UserDto userDto, HttpSession session);
 
-    Boolean checkUserByEmail(UserDto userDto);
-
-    UserDto getUserByEmail(UserDto userDto);
+    void logOut(HttpSession session);
 
 }

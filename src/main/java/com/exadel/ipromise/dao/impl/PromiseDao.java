@@ -34,7 +34,7 @@ public class PromiseDao {
             preparedStatement.setInt(4, promise.getAmountDays());
             return preparedStatement;
         }, keyHolder);
-        return  (Long) keyHolder.getKey();
+        return (Long) keyHolder.getKey();
     }
 
     public List<Promise> getByIdUser(int userId) {

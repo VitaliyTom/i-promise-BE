@@ -4,7 +4,7 @@ import com.exadel.ipromise.entity.User;
 
 public interface UserDao {
 
-    void create(User user);
+    Integer create(User user);
 
     User getById(int id);
 

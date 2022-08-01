@@ -5,11 +5,19 @@ import com.exadel.ipromise.dao.UserDao;
 import com.exadel.ipromise.dto.UserDto;
 import com.exadel.ipromise.entity.User;
 import com.exadel.ipromise.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import javax.servlet.http.HttpSession;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService {
+
+    String USER_ALREADY_EXISTS = "User with this e-mail already exists";
+    String USER_NOT_EXIST = "User with this e-mail does not exist";
+    String WRONG_LOGIN_OR_PASSWORD = "Wrong login or password!";
 
     private final UserConverter userConverter;
     private final UserDao userDao;
@@ -21,42 +29,53 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void addUser(UserDto userDto) {
-        User user = userConverter.convertToDto(userDto);
-        if (!userDao.checkIfUserExistsByEmail(user.getEmail())) {
-            userDao.create(user);
+    public UserDto addUser(UserDto userDto, HttpSession session) {
+
+        User user = userConverter.convertToEntity(userDto);
+
+        if (userDao.checkIfUserExistsByEmail(user.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, USER_ALREADY_EXISTS);
         }
+
+        Integer userID = userDao.create(user);
+        UserDto newUserDto = userConverter.convertToDto(userDao.getById(userID));
+
+        session.setAttribute("isLogged", true);
+        session.setAttribute("user", newUserDto);
+
+        return newUserDto;
     }
 
     @Override
-    @Transactional
-    public UserDto getUserById(int id) {
-        User user = userDao.getById(id);
-        return userConverter.convertToEntity(user);
-    }
+    public UserDto logIn(UserDto userDto, HttpSession session) {
 
-    @Override
-    @Transactional
-    public Boolean checkUserByEmail(UserDto userDto) {
-        User user = userConverter.convertToDto(userDto);
-        return userDao.checkIfUserExistsByEmail(user.getEmail());
-    }
+        User user = userConverter.convertToEntity(userDto);
 
-    @Override
-    @Transactional
-    public UserDto getUserByEmail(UserDto userDto) {
+        if (!userDao.checkIfUserExistsByEmail(user.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, USER_NOT_EXIST);
+        }
 
-        User user = userConverter.convertToDto(userDto);
         User userEntity = userDao.getByEmail(user.getEmail());
 
-        if (validUser(user, userEntity)) {
-            return userConverter.convertToEntity(userEntity);
+        if (validationUser(user, userEntity)) {
+
+            UserDto newUserDto = userConverter.convertToDto(userEntity);
+            session.setAttribute("isLogged", true);
+            session.setAttribute("user", newUserDto);
+            return newUserDto;
+
         } else {
-            return new UserDto();
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, WRONG_LOGIN_OR_PASSWORD);
         }
     }
 
-    public Boolean validUser(User user, User userEntity) {
+    @Override
+    public void logOut(HttpSession session) {
+        session.setAttribute("isLogged", false);
+        session.removeAttribute("user");
+    }
+
+    public Boolean validationUser(User user, User userEntity) {
         return user.getEmail().equals(userEntity.getEmail()) && user.getPassword().equals(userEntity.getPassword());
     }
 }
