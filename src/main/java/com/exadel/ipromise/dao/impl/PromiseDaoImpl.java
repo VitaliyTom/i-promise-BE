@@ -1,5 +1,6 @@
 package com.exadel.ipromise.dao.impl;
 
+import com.exadel.ipromise.dao.PromiseDao;
 import com.exadel.ipromise.entity.Promise;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,14 +12,14 @@ import java.sql.PreparedStatement;
 import java.util.List;
 
 @Repository
-public class PromiseDao {
+public class PromiseDaoImpl implements PromiseDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    String CREATE = "INSERT INTO jpa.promises (user_id, addiction_id, start_date_stamp, amount_days) VALUES(?, ?, ?, ?)";
-    String GET_BY_ID_USER = "SELECT * FROM jpa.promises AS PR INNER JOIN jpa.addictions AS ADCT on ADCT.addiction_id = PR.addiction_id WHERE user_id = ?";
+    final String CREATE = "INSERT INTO jpa.promises (user_id, addiction_id, start_date_stamp, amount_days) VALUES(?, ?, ?, ?)";
+    final String GET_BY_ID_USER = "SELECT * FROM jpa.promises AS PR INNER JOIN jpa.addictions AS ADCT on ADCT.addiction_id = PR.addiction_id WHERE user_id = ?";
 
-    public PromiseDao(JdbcTemplate jdbcTemplate) {
+    public PromiseDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -37,7 +38,7 @@ public class PromiseDao {
         return (Long) keyHolder.getKey();
     }
 
-    public List<Promise> getByIdUser(int userId) {
+    public List<Promise> getByIdUser(Long userId) {
         return jdbcTemplate.query(GET_BY_ID_USER, new BeanPropertyRowMapper<>(Promise.class), userId);
     }
 }

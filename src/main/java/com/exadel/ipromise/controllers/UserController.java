@@ -3,13 +3,13 @@ package com.exadel.ipromise.controllers;
 import com.exadel.ipromise.dto.UserDto;
 import com.exadel.ipromise.service.UserService;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/users")
 public class UserController {
 
@@ -30,8 +30,9 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
+    public
+    ResponseEntity<?> logout(HttpSession session) {
         userService.logOut(session);
-        return ResponseEntity.status(HttpStatus.OK).body("BYE!!!").toString();
+        return ResponseEntity.ok("Bye!!!");
     }
 }

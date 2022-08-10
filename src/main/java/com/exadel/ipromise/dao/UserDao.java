@@ -4,12 +4,12 @@ import com.exadel.ipromise.entity.User;
 
 public interface UserDao {
 
-    Integer create(User user);
+    Long create(User user);
 
-    User getById(int id);
-
-    User getByEmail(String email);
+    User getById(Long id);
 
     Boolean checkIfUserExistsByEmail(String email);
+
+    User getUserByEmailAndPassword(String getEmail, String getPassword);
 
 }

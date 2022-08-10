@@ -15,18 +15,18 @@ public class UserDaoImpl implements UserDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    String CREATE = "INSERT INTO jpa.users (nick_name, email, password) VALUES(?, ?, ?)";
-    String UPDATE = "UPDATE jpa.users SET nick_name = ?, email = ?, password = ? WHERE user_id = ?";
-    String GET_BY_ID = "SELECT * FROM jpa.users WHERE user_id = ?";
-    String GET_BY_EMAIL = "SELECT * FROM jpa.users WHERE email = ?";
-    String CHECK_IF_USER_EXISTS_BY_EMAIL = "SELECT EXISTS (SELECT * FROM jpa.users WHERE email = ?)";
+    final String CREATE = "INSERT INTO jpa.users (nick_name, email, password) VALUES(?, ?, ?)";
+    final String UPDATE = "UPDATE jpa.users SET nick_name = ?, email = ?, password = ? WHERE user_id = ?";
+    final String GET_BY_ID = "SELECT * FROM jpa.users WHERE user_id = ?";
+    final String CHECK_IF_USER_EXISTS_BY_EMAIL = "SELECT EXISTS (SELECT * FROM jpa.users WHERE email = ?)";
+    final String GET_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM jpa.users WHERE email=? AND password=?";
 
     public UserDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public Integer create(User user) {
+    public Long create(User user) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -37,7 +37,8 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setString(3, user.getPassword());
             return preparedStatement;
         }, keyHolder);
-        return  (Integer) keyHolder.getKey();
+
+        return (Long) keyHolder.getKey();
     }
 
     public int update(User user) {
@@ -48,18 +49,17 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getById(int id) {
+    public User getById(Long id) {
         return jdbcTemplate.queryForObject(GET_BY_ID, new BeanPropertyRowMapper<>(User.class), id);
-    }
-
-    @Override
-    public User getByEmail(String email) {
-        return jdbcTemplate.queryForObject(GET_BY_EMAIL, new BeanPropertyRowMapper<>(User.class), email);
     }
 
     @Override
     public Boolean checkIfUserExistsByEmail(String email) {
         return jdbcTemplate.queryForObject(CHECK_IF_USER_EXISTS_BY_EMAIL, Boolean.class, email);
+    }
+
+    public User getUserByEmailAndPassword(String email, String password) {
+        return jdbcTemplate.queryForObject(GET_USER_BY_EMAIL_AND_PASSWORD, new BeanPropertyRowMapper<>(User.class), email, password);
     }
 
 }

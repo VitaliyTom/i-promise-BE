@@ -5,36 +5,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Reason {
 
     @JsonProperty("reason_id")
-    private int reasonId;
+    private Long reasonId;
 
     @JsonProperty("promise_id")
-    private int promiseId;
+    private Long promiseId;
 
-    @JsonProperty("reason")
     private String reason;
 
     public Reason() {
     }
 
-    public Reason(int reasonId, int promiseId, String reason) {
+    public Reason(Long reasonId, Long promiseId, String reason) {
         this.reasonId = reasonId;
         this.promiseId = promiseId;
         this.reason = reason;
     }
 
-    public int getReasonId() {
+    public Long getReasonId() {
         return reasonId;
     }
 
-    public void setReasonId(int reasonId) {
+    public void setReasonId(Long reasonId) {
         this.reasonId = reasonId;
     }
 
-    public int getPromiseId() {
+    public Long getPromiseId() {
         return promiseId;
     }
 
-    public void setPromiseId(int promiseId) {
+    public void setPromiseId(Long promiseId) {
         this.promiseId = promiseId;
     }
 
@@ -45,5 +44,4 @@ public class Reason {
     public void setReason(String reason) {
         this.reason = reason;
     }
-
 }
