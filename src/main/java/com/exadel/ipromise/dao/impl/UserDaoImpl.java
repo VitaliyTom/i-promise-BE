@@ -15,11 +15,11 @@ public class UserDaoImpl implements UserDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    final String CREATE = "INSERT INTO jpa.users (nick_name, email, password) VALUES(?, ?, ?)";
-    final String UPDATE = "UPDATE jpa.users SET nick_name = ?, email = ?, password = ? WHERE user_id = ?";
-    final String GET_BY_ID = "SELECT * FROM jpa.users WHERE user_id = ?";
-    final String CHECK_IF_USER_EXISTS_BY_EMAIL = "SELECT EXISTS (SELECT * FROM jpa.users WHERE email = ?)";
-    final String GET_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM jpa.users WHERE email=? AND password=?";
+    private final String CREATE = "INSERT INTO jpa.users (nick_name, email, password) VALUES(?, ?, ?)";
+    private final String UPDATE = "UPDATE jpa.users SET nick_name = ?, email = ?, password = ? WHERE user_id = ? RETURNING *";
+    private final String GET_BY_ID = "SELECT * FROM jpa.users WHERE user_id = ?";
+    private final String CHECK_IF_USER_EXISTS_BY_EMAIL = "SELECT EXISTS (SELECT * FROM jpa.users WHERE email = ?)";
+    private final String GET_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM jpa.users WHERE email=? AND password=?";
 
     public UserDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -41,11 +41,9 @@ public class UserDaoImpl implements UserDao {
         return (Long) keyHolder.getKey();
     }
 
-    public int update(User user) {
-        return jdbcTemplate.update(UPDATE, user.getNickName(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getUserId());
+    @Override
+    public User update(User user) {
+        return jdbcTemplate.queryForObject(UPDATE, new BeanPropertyRowMapper<>(User.class), user.getNickName(), user.getEmail(), user.getPassword(), user.getUserId());
     }
 
     @Override

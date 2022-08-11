@@ -14,7 +14,7 @@ public class ReasonDaoImpl implements ReasonDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    final String CREATE = "INSERT INTO jpa.reasons (promise_id, reason) VALUES (?, ?)";
+    private final String CREATE = "INSERT INTO jpa.reasons (promise_id, reason) VALUES (?, ?)";
 
     public ReasonDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

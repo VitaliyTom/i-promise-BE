@@ -6,6 +6,8 @@ public interface UserDao {
 
     Long create(User user);
 
+    User update(User user);
+
     User getById(Long id);
 
     Boolean checkIfUserExistsByEmail(String email);

@@ -16,8 +16,8 @@ public class PromiseDaoImpl implements PromiseDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    final String CREATE = "INSERT INTO jpa.promises (user_id, addiction_id, start_date_stamp, amount_days) VALUES(?, ?, ?, ?)";
-    final String GET_BY_ID_USER = "SELECT * FROM jpa.promises AS PR INNER JOIN jpa.addictions AS ADCT on ADCT.addiction_id = PR.addiction_id WHERE user_id = ?";
+    private final String CREATE = "INSERT INTO jpa.promises (user_id, addiction_id, start_date_stamp, amount_days) VALUES(?, ?, ?, ?)";
+    private final String GET_BY_ID_USER = "SELECT * FROM jpa.promises AS PR INNER JOIN jpa.addictions AS ADCT on ADCT.addiction_id = PR.addiction_id WHERE user_id = ?";
 
     public PromiseDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

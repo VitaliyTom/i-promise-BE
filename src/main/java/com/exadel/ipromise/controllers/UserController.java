@@ -24,14 +24,18 @@ public class UserController {
         return userService.addUser(userDto, session);
     }
 
+    @PostMapping("/update")
+    public UserDto update(@RequestBody UserDto userDto, HttpSession session) {
+        return userService.update(userDto, session);
+    }
+
     @PostMapping("/login")
     public UserDto logIn(@RequestBody UserDto userDto, HttpSession session) {
         return userService.logIn(userDto, session);
     }
 
     @GetMapping("/logout")
-    public
-    ResponseEntity<?> logout(HttpSession session) {
+    public ResponseEntity<String> logout(HttpSession session) {
         userService.logOut(session);
         return ResponseEntity.ok("Bye!!!");
     }

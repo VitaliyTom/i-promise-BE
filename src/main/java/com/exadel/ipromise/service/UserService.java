@@ -8,6 +8,8 @@ public interface UserService {
 
     UserDto addUser(UserDto userDto, HttpSession session);
 
+    UserDto update(UserDto userDto, HttpSession session);
+
     UserDto logIn(UserDto userDto, HttpSession session);
 
     void logOut(HttpSession session);

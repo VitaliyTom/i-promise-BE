@@ -14,8 +14,9 @@ import javax.servlet.http.HttpSession;
 @Service("UserService")
 public class UserServiceImpl implements UserService {
 
-    String USER_ALREADY_EXISTS = "User with this e-mail already exists";
-    String WRONG_LOGIN_OR_PASSWORD = "Wrong login or password!";
+    private final String USER_ALREADY_EXISTS = "User with this e-mail already exists";
+    private final String WRONG_LOGIN_OR_PASSWORD = "Wrong login or password!";
+    private final String SOMETHING_WENT_WRONG = "Something went wrong...";
 
     private final UserConverter userConverter;
     private final UserDao userDao;
@@ -41,6 +42,21 @@ public class UserServiceImpl implements UserService {
         session.setAttribute("user", newUserDto);
 
         return newUserDto;
+    }
+
+    @Override
+    public UserDto update(UserDto userDto, HttpSession session) {
+
+        User user = userConverter.convertToEntity(userDto);
+        try{
+            User updatedUser = userDao.update(user);
+            UserDto newUserDto = userConverter.convertToDto(updatedUser);
+            session.setAttribute("isLogged", true);
+            session.setAttribute("user", newUserDto);
+            return newUserDto;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, SOMETHING_WENT_WRONG);
+        }
     }
 
     @Override
