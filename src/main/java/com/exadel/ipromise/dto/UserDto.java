@@ -1,36 +1,29 @@
-package com.exadel.ipromise.entity;
+package com.exadel.ipromise.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class User {
+public class UserDto {
 
-    @JsonProperty("user_id")
     private Long userId;
-
-    @JsonProperty("nick_name")
     private String nickName;
-
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    public User() {
+    public UserDto() {
     }
 
-    public User(Long userId, String nickName, String email, String password) {
+    public UserDto(Long userId, String nickName, String email, String password) {
         this.userId = userId;
         this.nickName = nickName;
         this.email = email;
         this.password = password;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
+    public Long getUserId() { return userId; }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+    public void setUserId(Long userId) { this.userId = userId; }
 
     public String getNickName() {
         return nickName;
