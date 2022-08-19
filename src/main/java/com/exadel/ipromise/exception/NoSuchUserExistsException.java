@@ -1,4 +1,7 @@
 package com.exadel.ipromise.exception;
 
-public class noSuchUserExists {
+public class NoSuchUserExistsException extends RuntimeException {
+    public NoSuchUserExistsException(String message) {
+        super(message);
+    }
 }
