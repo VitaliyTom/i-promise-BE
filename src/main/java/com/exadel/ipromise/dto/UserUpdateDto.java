@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.*;
 
-public class UserDto {
+public class UserUpdateDto {
 
+    @NotNull(message = "cannot be empty. ")
     private Long userId;
 
     @NotNull(message = "cannot be empty. ")
@@ -21,10 +22,10 @@ public class UserDto {
     @Size(min = 5, max = 50, message = "must be at least 5 characters and maximum 50. ")
     private String password;
 
-    public UserDto() {
+    public UserUpdateDto() {
     }
 
-    public UserDto(Long userId, String nickName, String email, String password) {
+    public UserUpdateDto(Long userId, String nickName, String email, String password) {
         this.userId = userId;
         this.nickName = nickName;
         this.email = email;
@@ -62,5 +63,4 @@ public class UserDto {
     public void setPassword(String password) {
         this.password = password;
     }
-
 }
