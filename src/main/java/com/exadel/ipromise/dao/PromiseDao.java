@@ -6,7 +6,11 @@ import java.util.List;
 
 public interface PromiseDao {
 
-    Long create(Promise promise);
+    Long addPromise(Promise promise);
 
-    List<Promise> getByIdUser(Long userId);
+    List<Promise> getPromisesByIdUser(Long userId);
+
+    int update(Promise promise);
+
+    int delete(Long promiseId);
 }

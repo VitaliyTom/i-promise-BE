@@ -66,6 +66,19 @@ public class ControllerAdvisor {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(FieldValidationPromiseException.class)
+    public ResponseEntity<Object> FieldValidationPromiseException(
+            RuntimeException ex, WebRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("httpStatus", HttpStatus.BAD_REQUEST);
+        body.put("httpStatusCode", HttpStatus.BAD_REQUEST.value());
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleSomethingWentWrongException(
             RuntimeException ex, WebRequest request) {

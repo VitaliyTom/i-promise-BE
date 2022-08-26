@@ -1,48 +1,29 @@
-package com.exadel.ipromise.entity;
+package com.exadel.ipromise.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.exadel.ipromise.entity.Reason;
 
-public class Promise {
+import java.util.List;
 
-    @JsonProperty("promise_id")
+public class PromiseListDto {
+
     private Long promiseId;
 
-    @JsonProperty("user_id")
     private Long userId;
 
-    @JsonProperty("addiction_id")
     private Long addictionId;
 
-    @JsonProperty("start_date_stamp")
     private Long startDateStamp;
 
-    @JsonProperty("amount_days")
     private Long amountDays;
 
-    @JsonProperty("name_addiction")
     private String nameAddiction;
 
-    private Reason reason;
+    private List<Reason> reason;
 
-    public Promise() {
+    public PromiseListDto() {
     }
 
-    public Promise(Long promiseId, Long userId, Long amountDays) {
-        this.promiseId = promiseId;
-        this.userId = userId;
-        this.amountDays = amountDays;
-    }
-
-    public Promise(Long promiseId, Long userId, Long addictionId, Long startDateStamp, Long amountDays, String nameAddiction) {
-        this.promiseId = promiseId;
-        this.userId = userId;
-        this.addictionId = addictionId;
-        this.startDateStamp = startDateStamp;
-        this.amountDays = amountDays;
-        this.nameAddiction = nameAddiction;
-    }
-
-    public Promise(Long promiseId, Long userId, Long addictionId, Long startDateStamp, Long amountDays, String nameAddiction, Reason reason) {
+    public PromiseListDto(Long promiseId, Long userId, Long addictionId, Long startDateStamp, Long amountDays, String nameAddiction, List<Reason> reason) {
         this.promiseId = promiseId;
         this.userId = userId;
         this.addictionId = addictionId;
@@ -100,11 +81,11 @@ public class Promise {
         this.nameAddiction = nameAddiction;
     }
 
-    public Reason getReason() {
+    public List<Reason> getReason() {
         return reason;
     }
 
-    public void setReason(Reason reason) {
+    public void setReason(List<Reason> reason) {
         this.reason = reason;
     }
 

@@ -1,48 +1,39 @@
-package com.exadel.ipromise.entity;
+package com.exadel.ipromise.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-public class Promise {
+public class PromiseDto {
 
-    @JsonProperty("promise_id")
     private Long promiseId;
 
-    @JsonProperty("user_id")
+    @NotNull
+    @Min(1)
     private Long userId;
 
-    @JsonProperty("addiction_id")
+    @NotNull
+    @Min(1)
     private Long addictionId;
 
-    @JsonProperty("start_date_stamp")
+    @NotNull(message = "cannot be empty. ")
+    @Min(1555555555)
     private Long startDateStamp;
 
-    @JsonProperty("amount_days")
+    @NotNull(message = "cannot be empty. ")
+    @Min(value = 1, message = "must be at least 1 day. ")
     private Long amountDays;
 
-    @JsonProperty("name_addiction")
+    @NotNull(message = "cannot be empty. ")
+    @Size(min = 3, max = 50, message = "must be at least 3 characters and maximum 50. ")
     private String nameAddiction;
 
-    private Reason reason;
+    private String reason;
 
-    public Promise() {
+    public PromiseDto() {
     }
 
-    public Promise(Long promiseId, Long userId, Long amountDays) {
-        this.promiseId = promiseId;
-        this.userId = userId;
-        this.amountDays = amountDays;
-    }
-
-    public Promise(Long promiseId, Long userId, Long addictionId, Long startDateStamp, Long amountDays, String nameAddiction) {
-        this.promiseId = promiseId;
-        this.userId = userId;
-        this.addictionId = addictionId;
-        this.startDateStamp = startDateStamp;
-        this.amountDays = amountDays;
-        this.nameAddiction = nameAddiction;
-    }
-
-    public Promise(Long promiseId, Long userId, Long addictionId, Long startDateStamp, Long amountDays, String nameAddiction, Reason reason) {
+    public PromiseDto(Long promiseId, Long userId, Long addictionId, Long startDateStamp, Long amountDays, String nameAddiction, String reason) {
         this.promiseId = promiseId;
         this.userId = userId;
         this.addictionId = addictionId;
@@ -100,11 +91,11 @@ public class Promise {
         this.nameAddiction = nameAddiction;
     }
 
-    public Reason getReason() {
+    public String getReason() {
         return reason;
     }
 
-    public void setReason(Reason reason) {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 
