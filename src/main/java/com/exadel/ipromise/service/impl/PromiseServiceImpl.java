@@ -6,15 +6,20 @@ import com.exadel.ipromise.dao.ReasonDao;
 import com.exadel.ipromise.dto.PromiseDto;
 import com.exadel.ipromise.dto.PromiseListDto;
 import com.exadel.ipromise.dto.PromiseUpdateDto;
+import com.exadel.ipromise.dto.UserDto;
 import com.exadel.ipromise.entity.Promise;
 import com.exadel.ipromise.entity.Reason;
+import com.exadel.ipromise.exception.UserIsInvalidAuthException;
 import com.exadel.ipromise.service.PromiseService;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Service("PromiseService")
 public class PromiseServiceImpl implements PromiseService {
+
+    private final String USER_UNAUTHORIZED = "User unauthorized";
 
     private final PromiseConverter promiseConverter;
     private final PromiseDao promiseDao;
@@ -58,11 +63,13 @@ public class PromiseServiceImpl implements PromiseService {
     }
 
     @Override
-    public List<PromiseListDto> delete(PromiseUpdateDto promiseUpdateDto) {
-
-        Promise promise = promiseConverter.convertToEntity(promiseUpdateDto);
-        promiseDao.delete(promise.getPromiseId());
-        List<Promise> promises = promiseDao.getPromisesByIdUser(promise.getUserId());
+    public List<PromiseListDto> delete( Long promiseId, HttpSession session) {
+        if ( session.getAttribute("isLogged") == null || session.getAttribute("isLogged").equals(false)){
+            throw new UserIsInvalidAuthException(USER_UNAUTHORIZED);
+        }
+        promiseDao.delete(promiseId);
+        UserDto userDto = (UserDto) session.getAttribute("user");
+        List<Promise> promises = promiseDao.getPromisesByIdUser(userDto.getUserId());
         return promiseConverter.convertToListPromiseDto(promises);
     }
 }

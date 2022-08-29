@@ -17,15 +17,12 @@ public class PromiseDto {
     private Long addictionId;
 
     @NotNull(message = "cannot be empty. ")
-    @Min(1555555555)
     private Long startDateStamp;
 
     @NotNull(message = "cannot be empty. ")
     @Min(value = 1, message = "must be at least 1 day. ")
     private Long amountDays;
 
-    @NotNull(message = "cannot be empty. ")
-    @Size(min = 3, max = 50, message = "must be at least 3 characters and maximum 50. ")
     private String nameAddiction;
 
     private String reason;

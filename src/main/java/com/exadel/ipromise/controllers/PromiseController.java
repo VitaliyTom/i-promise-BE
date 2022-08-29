@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -23,30 +24,29 @@ public class PromiseController {
         this.promiseService = promiseService;
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public List<PromiseListDto> create(@Valid @RequestBody PromiseDto promiseDto, BindingResult result) {
 
         validation(result);
         return promiseService.addPromise(promiseDto);
     }
 
-    @GetMapping("/get-all-promises")
+    @GetMapping
     public List<PromiseListDto> getAllPromises(@RequestParam(value = "user-id") Long userId) {
         return promiseService.get(userId);
     }
 
-    @PostMapping("/update")
+    @PutMapping
     public List<PromiseListDto> update(@Valid @RequestBody PromiseUpdateDto promiseUpdateDto, BindingResult result) {
 
         validation(result);
         return promiseService.update(promiseUpdateDto);
     }
 
-    @PostMapping("/delete")
-    public List<PromiseListDto> delete(@Valid @RequestBody PromiseUpdateDto promiseUpdateDto, BindingResult result) {
+    @DeleteMapping
+    public List<PromiseListDto> delete(@RequestParam(value = "promise-id") Long promiseId, HttpSession session) {
 
-        validation(result);
-        return promiseService.delete(promiseUpdateDto);
+        return promiseService.delete(promiseId , session);
     }
 
     private void validation(BindingResult result) {
