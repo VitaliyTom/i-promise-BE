@@ -4,6 +4,6 @@ import com.exadel.ipromise.entity.Reason;
 
 public interface ReasonDao {
 
-    Long create(Reason reason);
+    int create(Reason reason);
 
 }
