@@ -5,6 +5,7 @@ import com.exadel.ipromise.dto.PromiseListDto;
 import com.exadel.ipromise.dto.PromiseUpdateDto;
 import com.exadel.ipromise.exception.FieldValidationPromiseException;
 import com.exadel.ipromise.service.PromiseService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -25,28 +26,28 @@ public class PromiseController {
     }
 
     @PostMapping
-    public List<PromiseListDto> create(@Valid @RequestBody PromiseDto promiseDto, BindingResult result) {
+    public ResponseEntity<List<PromiseListDto>> create(@Valid @RequestBody PromiseDto promiseDto, BindingResult result) {
 
         validation(result);
-        return promiseService.addPromise(promiseDto);
+        return ResponseEntity.ok().body(promiseService.addPromise(promiseDto));
     }
 
     @GetMapping
-    public List<PromiseListDto> getAllPromises(@RequestParam(value = "user-id") Long userId) {
-        return promiseService.get(userId);
+    public ResponseEntity<List<PromiseListDto>> getAllPromises(@RequestParam(value = "user-id") Long userId) {
+        return ResponseEntity.ok().body(promiseService.get(userId));
     }
 
     @PutMapping
-    public List<PromiseListDto> update(@Valid @RequestBody PromiseUpdateDto promiseUpdateDto, BindingResult result) {
+    public ResponseEntity<List<PromiseListDto>> update(@Valid @RequestBody PromiseUpdateDto promiseUpdateDto, BindingResult result) {
 
         validation(result);
-        return promiseService.update(promiseUpdateDto);
+        return ResponseEntity.ok().body(promiseService.update(promiseUpdateDto));
     }
 
     @DeleteMapping
-    public List<PromiseListDto> delete(@RequestParam(value = "promise-id") Long promiseId, HttpSession session) {
+    public ResponseEntity<List<PromiseListDto>> delete(@RequestParam(value = "promise-id") Long promiseId, HttpSession session) {
 
-        return promiseService.delete(promiseId , session);
+        return ResponseEntity.ok().body(promiseService.delete(promiseId, session));
     }
 
     private void validation(BindingResult result) {

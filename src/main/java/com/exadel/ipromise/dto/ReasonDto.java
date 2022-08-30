@@ -5,14 +5,14 @@ import javax.validation.constraints.Size;
 
 public class ReasonDto {
 
-    Long reasonId;
+    private Long reasonId;
 
     @NotNull
-    Long PromiseId;
+    private Long PromiseId;
 
     @NotNull(message = "cannot be empty. ")
     @Size(min = 5, max = 50, message = "must be at least 5 characters and maximum 50. ")
-    String reason;
+    private String reason;
 
     public ReasonDto() {
     }

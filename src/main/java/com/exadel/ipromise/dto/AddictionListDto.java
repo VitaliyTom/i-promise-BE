@@ -2,9 +2,9 @@ package com.exadel.ipromise.dto;
 
 public class AddictionListDto {
 
-    Long addictionId;
+    private Long addictionId;
 
-    String addiction;
+    private String addiction;
 
     public AddictionListDto() {
     }

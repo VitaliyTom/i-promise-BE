@@ -26,21 +26,21 @@ public class ReasonController {
 
 
     @PostMapping
-    public ReasonDto create(@Valid @RequestBody ReasonDto reasonDto, BindingResult result) {
+    public ResponseEntity<ReasonDto> create(@Valid @RequestBody ReasonDto reasonDto, BindingResult result) {
 
         validation(result);
-        return reasonService.addReason(reasonDto);
+        return ResponseEntity.ok().body(reasonService.addReason(reasonDto));
     }
 
     @PutMapping
-    public ReasonDto update(@Valid @RequestBody ReasonDto reasonDto, BindingResult result) {
+    public ResponseEntity<ReasonDto> update(@Valid @RequestBody ReasonDto reasonDto, BindingResult result) {
 
         validation(result);
-        return reasonService.update(reasonDto);
+        return ResponseEntity.ok().body(reasonService.update(reasonDto));
     }
 
     @DeleteMapping
-    public ResponseEntity<String> delete(@RequestParam(value = "reasonId") Long reasonId) {
+    public ResponseEntity<String> delete(@RequestParam(value = "reason-id") Long reasonId) {
 
         reasonService.delete(reasonId);
         return ResponseEntity.ok("Removal completed");
