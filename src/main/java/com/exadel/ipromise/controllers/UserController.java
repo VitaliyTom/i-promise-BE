@@ -27,24 +27,24 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public UserDto create(@Valid @RequestBody UserDto userDto, BindingResult result, HttpSession session) {
+    public ResponseEntity<UserDto> create(@Valid @RequestBody UserDto userDto, BindingResult result, HttpSession session) {
 
         validation(result);
-        return userService.addUser(userDto, session);
+        return ResponseEntity.ok().body(userService.addUser(userDto, session));
     }
 
     @PutMapping("/update")
-    public UserDto update(@Valid @RequestBody UserUpdateDto userUpdateDto, BindingResult result, HttpSession session) {
+    public ResponseEntity<UserDto> update(@Valid @RequestBody UserUpdateDto userUpdateDto, BindingResult result, HttpSession session) {
 
         validation(result);
-        return userService.update(userUpdateDto, session);
+        return ResponseEntity.ok().body(userService.update(userUpdateDto, session));
     }
 
     @PostMapping("/login")
-    public UserDto logIn(@Valid @RequestBody UserAuthDto userAuthDto, BindingResult result, HttpSession session) {
+    public ResponseEntity<UserDto> logIn(@Valid @RequestBody UserAuthDto userAuthDto, BindingResult result, HttpSession session) {
 
         validation(result);
-        return userService.logIn(userAuthDto, session);
+        return ResponseEntity.ok().body(userService.logIn(userAuthDto, session));
     }
 
     @GetMapping("/logout")
